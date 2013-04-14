@@ -70,7 +70,9 @@ See `x-set-selection'."
   (when pbcopy-program
     (let (clip-text primary-text)
       (when pbcopy-select-enable-clipboard
-        (setq clip-text (shell-command-to-string "pbpaste"))
+        (let ((tramp-mode nil)
+              (default-directory "~"))
+          (setq clip-text (shell-command-to-string "pbpaste")))
         (setq clip-text
               (cond ;; check clipboard selection
                ((or (not clip-text) (string= clip-text ""))
@@ -82,7 +84,9 @@ See `x-set-selection'."
                 (setq pbcopy-last-selected-text-clipboard clip-text)
                 nil)
                (t (setq pbcopy-last-selected-text-clipboard clip-text)))))
-      (setq primary-text (shell-command-to-string "pbpaste"))
+      (let ((tramp-mode nil)
+            (default-directory "~"))
+        (setq primary-text (shell-command-to-string "pbpaste")))
       (setq primary-text
             (cond ;; check primary selection
              ((or (not primary-text) (string= primary-text ""))
